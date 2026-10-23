@@ -163,7 +163,7 @@ size_t cu_cstring_indices_of(const char *cstring, const char *csubstring, size_t
 
 long long cu_cstring_first_index_of_length(const char *cstring, size_t cstring_length, const char *csubstring, size_t csubstring_length)
 {
-    if (cstring == NULL || csubstring == NULL || (cstring_length < csubstring_length)) return -1;
+    if (cstring == NULL || csubstring == NULL || csubstring_length == 0 || (cstring_length < csubstring_length)) return -1;
     
     size_t length_difference = cstring_length - csubstring_length;
     size_t j;
@@ -174,7 +174,7 @@ long long cu_cstring_first_index_of_length(const char *cstring, size_t cstring_l
             if (cstring[i + j] != csubstring[j]) break;
         }
 
-        if (csubstring_length == j) return (long long)i;
+        if (csubstring_length == j) return i;
     }
 
     return -1;
