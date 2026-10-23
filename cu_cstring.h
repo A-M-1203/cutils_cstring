@@ -216,12 +216,11 @@ size_t cu_cstring_indices_of_length(const char *cstring, size_t cstring_length, 
     return indices_size;
 }
 
-size_t cu_cstring_chop_left(const char **cstring, size_t chop_count)
+size_t cu_cstring_chop_left(const char **const cstring, size_t chop_count)
 {
     if (cstring == NULL) return 0;
 
     size_t cstring_length = cu_cstring_length(*cstring);
-    if (cstring_length == 0) return 0;
     if (cstring_length < chop_count) chop_count = cstring_length;
 
     size_t cstring_new_length = cstring_length - chop_count;
