@@ -135,17 +135,11 @@ long long cu_cstring_first_index_of(const char *cstring, const char *csubstring)
 long long cu_cstring_last_index_of(const char *cstring, const char *csubstring)
 {
     long long last_index = -1;
-    // long long prev_last_index_of = cu_cstring_first_index_of(cstring, csubstring);
-    long long prev_last_index = 0;
-    while ((prev_last_index = cu_cstring_first_index_of(cstring + (size_t)prev_last_index, csubstring)) != -1)
+    long long current_index = -1;
+    while ((current_index = cu_cstring_first_index_of(cstring + last_index + 1, csubstring)) != -1)
     {
-        last_index = (size_t)prev_last_index;
+        last_index += current_index + 1;
     }
-    // while (prev_last_index_of != -1)
-    // {
-    //     last_index_of = prev_last_index_of;
-    //     prev_last_index_of = cu_cstring_last_index_of(cstring + last_index_of, csubstring);
-    // }
 
     return last_index;
 }
