@@ -110,7 +110,7 @@ long long cu_cstring_first_index_of(const char *cstring, const char *csubstring)
     const char *csubstring_temp = csubstring;
     long long potential_index = 0;
     size_t hit_count = 0;
-    do
+    while (*cstring_temp != 0 && *csubstring_temp != 0)
     {
         if (*cstring_temp == *csubstring_temp)
         {
@@ -121,11 +121,11 @@ long long cu_cstring_first_index_of(const char *cstring, const char *csubstring)
         else
         {
             potential_index++;
-            csubstring_temp = cstring + potential_index;
+            cstring_temp = cstring + potential_index;
             csubstring_temp = csubstring;
             hit_count = 0;
         }
-    } while (*cstring_temp != 0 && *csubstring_temp != 0);
+    } 
 
     if (*(csubstring + hit_count) == 0) return potential_index;
     
