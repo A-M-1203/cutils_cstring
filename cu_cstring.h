@@ -89,17 +89,19 @@ size_t cu_cstring_copy(const char *cstring, char *cstring_copy)
     return copied_characters;
 }
 
-size_t cu_cstring_length_copy(const char *cstring, size_t length, char *cstring_copy)
+size_t cu_cstring_length_copy(const char *const cstring, const size_t length, char *const cstring_copy)
 {
     if (cstring == NULL || cstring_copy == NULL) return 0;
 
-    for (size_t i = 0; i < length; i++)
+    size_t copied_characters = 0;
+    while (cstring[copied_characters] != 0 && copied_characters < length)
     {
-        cstring_copy[i] = cstring[i];
+        cstring_copy[copied_characters] = cstring[copied_characters];
+        copied_characters++;
     }
-    cstring_copy[length] = 0;
+    cstring_copy[copied_characters] = 0;
 
-    return length;
+    return copied_characters;
 }
 
 long long cu_cstring_first_index_of(const char *cstring, const char *csubstring)
@@ -257,7 +259,7 @@ size_t cu_cstring_chop(char **const cstring, const size_t chop_count)
     return cstring_new_length;
 }
 
-size_t cu_cstring_chop_left_length(const char **cstring, size_t cstring_length, size_t chop_count)
+size_t cu_cstring_chop_left_length(const char **const cstring, const size_t cstring_length, size_t chop_count)
 {
     if (cstring == NULL || *cstring == NULL) return 0;
     if (cstring_length < chop_count) chop_count = cstring_length;
@@ -267,7 +269,7 @@ size_t cu_cstring_chop_left_length(const char **cstring, size_t cstring_length, 
     return cstring_new_length;
 }
 
-size_t cu_cstring_chop_right_length(char **cstring, size_t cstring_length, size_t chop_count)
+size_t cu_cstring_chop_right_length(char **const cstring, const size_t cstring_length, size_t chop_count)
 {
     if (cstring == NULL || *cstring == NULL) return 0;
     if (cstring_length < chop_count) chop_count = cstring_length;
@@ -277,10 +279,14 @@ size_t cu_cstring_chop_right_length(char **cstring, size_t cstring_length, size_
     return cstring_new_length;
 }
 
-size_t cu_cstring_chop_length(char **cstring, size_t cstring_length, size_t chop_count)
+size_t cu_cstring_chop_length(char **const cstring, const size_t cstring_length, const size_t chop_count)
 {
     if (cstring == NULL || *cstring == NULL) return 0;
-    if (cstring_length < chop_count * 2) chop_count = cstring_length;
+    if (cstring_length < chop_count * 2)
+    {
+        *cstring += cstring_length;
+        return 0;
+    }
 
     *cstring += chop_count;
     size_t cstring_new_length = cstring_length - chop_count * 2;
