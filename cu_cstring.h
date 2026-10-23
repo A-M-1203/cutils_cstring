@@ -79,7 +79,7 @@ size_t cu_cstring_copy(const char *cstring, char *cstring_copy)
     if (cstring == NULL || cstring_copy == NULL) return 0;
 
     size_t copied_characters = 0;
-    while(*cstring != 0)
+    while (*cstring != 0)
     {
         *cstring_copy++ = *cstring++;
         copied_characters++;
@@ -294,7 +294,7 @@ size_t cu_cstring_chop_length(char **const cstring, const size_t cstring_length,
     return cstring_new_length;
 }
 
-size_t cu_cstring_chop_left_copy(const char *cstring, size_t chop_count, char *cstring_choped)
+size_t cu_cstring_chop_left_copy(const char *const cstring, size_t chop_count, char *const cstring_choped)
 {   
     size_t cstring_length = cu_cstring_get_length(cstring);
     if (cstring_length < chop_count) chop_count = cstring_length;
@@ -303,7 +303,7 @@ size_t cu_cstring_chop_left_copy(const char *cstring, size_t chop_count, char *c
     return cstring_choped_length;
 }
 
-size_t cu_cstring_chop_right_copy(const char *cstring, size_t chop_count, char *cstring_choped)
+size_t cu_cstring_chop_right_copy(const char *const cstring, size_t chop_count, char *const cstring_choped)
 {
     size_t cstring_length = cu_cstring_get_length(cstring);
     if (cstring_length < chop_count) chop_count = cstring_length;
@@ -312,10 +312,17 @@ size_t cu_cstring_chop_right_copy(const char *cstring, size_t chop_count, char *
     return cstring_choped_length;
 }
 
-size_t cu_cstring_chop_copy(const char *cstring, size_t chop_count, char *cstring_choped)
+size_t cu_cstring_chop_copy(const char *const cstring, const size_t chop_count, char *const cstring_choped)
 {
     size_t cstring_length = cu_cstring_get_length(cstring);
-    if (cstring_length < chop_count * 2) chop_count = cstring_length;
+    if (cstring_length < chop_count * 2)
+    {
+        if (cstring_choped != NULL)
+        {
+            cstring_choped[0] = 0;
+        }
+        return 0;
+    }
 
     size_t cstring_choped_length = cu_cstring_length_copy(cstring + chop_count, cstring_length - chop_count, cstring_choped);
     return cstring_choped_length;
