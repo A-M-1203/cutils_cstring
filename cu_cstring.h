@@ -240,14 +240,14 @@ size_t cu_cstring_chop_right(char *const cstring, size_t chop_count)
     return cstring_new_length;
 }
 
-size_t cu_cstring_chop(char **cstring, size_t chop_count)
+size_t cu_cstring_chop(char **const cstring, const size_t chop_count)
 {
     if (cstring == NULL) return 0;
 
     size_t cstring_length = cu_cstring_length(*cstring);
     if (cstring_length < chop_count * 2)
     {
-        cstring += cstring_length;
+        *cstring += cstring_length;
         return 0;
     }
 
