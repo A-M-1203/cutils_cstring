@@ -146,7 +146,7 @@ long long cu_cstring_last_index_of(const char *cstring, const char *csubstring)
 
 size_t cu_cstring_indices_of(const char *cstring, const char *csubstring, size_t *indices, size_t indices_capacity)
 {
-    if (cstring == NULL || csubstring == NULL || *cstring == 0 || *csubstring == 0 || indices == NULL || indices_capacity == 0) return 0;
+    if (indices == NULL || indices_capacity == 0) return 0;
 
     size_t indices_size = 0;
     long long current_index = -1;
