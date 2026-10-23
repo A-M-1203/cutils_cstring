@@ -180,20 +180,20 @@ long long cu_cstring_first_index_of_length(const char *cstring, size_t cstring_l
     return -1;
 }
 
-long long cu_cstring_last_index_of_length(const char *cstring, size_t cstring_length, const char *csubstring, size_t csubstring_length)
+long long cu_cstring_last_index_of_length(const char *const cstring, const size_t cstring_length, const char *const csubstring, const size_t csubstring_length)
 {
     if (cstring == NULL || csubstring == NULL || (cstring_length < csubstring_length)) return -1;
 
-    size_t length_difference = cstring_length - csubstring_length;
-    long long j;
-    for (size_t i = cstring_length - 1; i >= 0; i--)
+    const size_t length_difference = cstring_length - csubstring_length;
+    size_t j;
+    for (long long i = length_difference; i >= 0; i--)
     {
-        for (j = csubstring_length - 1; j >= 0; j--)
+        for (j = 0; j < csubstring_length; j++)
         {
-            if (cstring[i - j] != csubstring[j]) break;
+            if (cstring[i + j] != csubstring[j]) break;
         }
 
-        if (j == -1) return (long long)i;
+        if (csubstring_length == j) return i;
     }
 
     return -1;
