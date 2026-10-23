@@ -5,7 +5,7 @@
 
 #define CU_INTERNAL static
 
-CU_INTERNAL size_t    cu_cstring_length                  (const char  *cstring);
+CU_INTERNAL size_t    cu_cstring_get_length              (const char  *cstring);
 // copy
 CU_INTERNAL size_t    cu_cstring_copy                    (const char  *cstring,         char   *cstring_copy);
 CU_INTERNAL size_t    cu_cstring_length_copy             (const char  *cstring,         size_t  length,               char   *cstring_copy);
@@ -65,7 +65,7 @@ CU_INTERNAL size_t    cu_cstring_split_length            (const char  *cstring, 
 #define CU_CSTRING_IMPLEMENTATION
 #ifdef CU_CSTRING_IMPLEMENTATION
 
-size_t cu_cstring_length(const char *cstring)
+size_t cu_cstring_get_length(const char *cstring)
 {
     if (cstring == NULL) return 0;
 
@@ -222,7 +222,7 @@ size_t cu_cstring_chop_left(const char **const cstring, size_t chop_count)
 {
     if (cstring == NULL) return 0;
 
-    size_t cstring_length = cu_cstring_length(*cstring);
+    size_t cstring_length = cu_cstring_get_length(*cstring);
     if (cstring_length < chop_count) chop_count = cstring_length;
 
     size_t cstring_new_length = cstring_length - chop_count;
@@ -234,7 +234,7 @@ size_t cu_cstring_chop_right(char *const cstring, size_t chop_count)
 {
     if (cstring == NULL) return 0;
 
-    size_t cstring_length = cu_cstring_length(cstring);
+    size_t cstring_length = cu_cstring_get_length(cstring);
     if (cstring_length < chop_count) chop_count = cstring_length;
 
     size_t cstring_new_length = cstring_length - chop_count;
@@ -246,7 +246,7 @@ size_t cu_cstring_chop(char **const cstring, const size_t chop_count)
 {
     if (cstring == NULL) return 0;
 
-    size_t cstring_length = cu_cstring_length(*cstring);
+    size_t cstring_length = cu_cstring_get_length(*cstring);
     if (cstring_length < chop_count * 2)
     {
         *cstring += cstring_length;
@@ -296,7 +296,7 @@ size_t cu_cstring_chop_length(char **const cstring, const size_t cstring_length,
 
 size_t cu_cstring_chop_left_copy(const char *cstring, size_t chop_count, char *cstring_choped)
 {   
-    size_t cstring_length = cu_cstring_length(cstring);
+    size_t cstring_length = cu_cstring_get_length(cstring);
     if (cstring_length < chop_count) chop_count = cstring_length;
 
     size_t cstring_choped_length = cu_cstring_copy(cstring + chop_count, cstring_choped);
@@ -305,7 +305,7 @@ size_t cu_cstring_chop_left_copy(const char *cstring, size_t chop_count, char *c
 
 size_t cu_cstring_chop_right_copy(const char *cstring, size_t chop_count, char *cstring_choped)
 {
-    size_t cstring_length = cu_cstring_length(cstring);
+    size_t cstring_length = cu_cstring_get_length(cstring);
     if (cstring_length < chop_count) chop_count = cstring_length;
 
     size_t cstring_choped_length = cu_cstring_length_copy(cstring, cstring_length - chop_count, cstring_choped);
@@ -314,7 +314,7 @@ size_t cu_cstring_chop_right_copy(const char *cstring, size_t chop_count, char *
 
 size_t cu_cstring_chop_copy(const char *cstring, size_t chop_count, char *cstring_choped)
 {
-    size_t cstring_length = cu_cstring_length(cstring);
+    size_t cstring_length = cu_cstring_get_length(cstring);
     if (cstring_length < chop_count * 2) chop_count = cstring_length;
 
     size_t cstring_choped_length = cu_cstring_length_copy(cstring + chop_count, cstring_length - chop_count, cstring_choped);
@@ -351,8 +351,8 @@ size_t cu_cstring_trim_left(char **cstring, const char *trim_cstring)
 
     long long index = 0;
     size_t count = 0;
-    size_t cstring_length = cu_cstring_length(*cstring);
-    size_t trim_cstring_length = cu_cstring_length(trim_cstring);
+    size_t cstring_length = cu_cstring_get_length(*cstring);
+    size_t trim_cstring_length = cu_cstring_get_length(trim_cstring);
     while (index = cu_cstring_first_index_of_length(*cstring + index, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
     {
         count++;
@@ -375,8 +375,8 @@ size_t cu_cstring_trim_right(char **cstring, const char *trim_cstring)
 
     long long index = 0;
     size_t count = 0;
-    size_t cstring_length = cu_cstring_length(*cstring);
-    size_t trim_cstring_length = cu_cstring_length(trim_cstring);
+    size_t cstring_length = cu_cstring_get_length(*cstring);
+    size_t trim_cstring_length = cu_cstring_get_length(trim_cstring);
     while (index = cu_cstring_last_index_of_length(*cstring, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
     {
         count++;
@@ -394,8 +394,8 @@ size_t cu_cstring_trim(char **cstring, const char *trim_cstring)
 
     long long index = 0;
     size_t count = 0;
-    size_t cstring_length = cu_cstring_length(*cstring);
-    size_t trim_cstring_length = cu_cstring_length(trim_cstring);
+    size_t cstring_length = cu_cstring_get_length(*cstring);
+    size_t trim_cstring_length = cu_cstring_get_length(trim_cstring);
     while (index = cu_cstring_first_index_of_length(*cstring + index, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
     {
         count++;
@@ -503,8 +503,8 @@ size_t cu_cstring_trim_left_copy(const char *cstring, const char *trim_cstring, 
 
     long long index = 0;
     size_t count = 0;
-    size_t cstring_length = cu_cstring_length(cstring);
-    size_t trim_cstring_length = cu_cstring_length(trim_cstring);
+    size_t cstring_length = cu_cstring_get_length(cstring);
+    size_t trim_cstring_length = cu_cstring_get_length(trim_cstring);
     while (index = cu_cstring_first_index_of_length(cstring + index, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
     {
         count++;
@@ -527,8 +527,8 @@ size_t cu_cstring_trim_right_copy(const char *cstring, const char *trim_cstring,
 
     long long index = 0;
     size_t count = 0;
-    size_t cstring_length = cu_cstring_length(cstring);
-    size_t trim_cstring_length = cu_cstring_length(trim_cstring);
+    size_t cstring_length = cu_cstring_get_length(cstring);
+    size_t trim_cstring_length = cu_cstring_get_length(trim_cstring);
     while (index = cu_cstring_last_index_of_length(cstring, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
     {
         count++;
@@ -546,8 +546,8 @@ size_t cu_cstring_trim_copy(const char *cstring, const char *trim_cstring, char 
 
     long long index = 0;
     size_t count = 0;
-    size_t cstring_length = cu_cstring_length(*cstring);
-    size_t trim_cstring_length = cu_cstring_length(trim_cstring);
+    size_t cstring_length = cu_cstring_get_length(*cstring);
+    size_t trim_cstring_length = cu_cstring_get_length(trim_cstring);
     while (index = cu_cstring_first_index_of_length(cstring + index, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
     {
         count++;
@@ -655,8 +655,8 @@ int cu_cstring_compare(const char *cstring_1, const char *cstring_2)
     if (cstring_1 == NULL) return -1;
     if (cstring_2 == NULL) return 1;
 
-    size_t cstring_1_length = cu_cstring_length(cstring_1);
-    size_t cstring_2_length = cu_cstring_length(cstring_2);
+    size_t cstring_1_length = cu_cstring_get_length(cstring_1);
+    size_t cstring_2_length = cu_cstring_get_length(cstring_2);
     size_t length = cstring_1_length;
     if (cstring_2_length < cstring_1_length) length = cstring_2_length;
 
@@ -677,8 +677,8 @@ int cu_cstring_compare_length(const char *cstring_1, const char *cstring_2, size
     if (cstring_1 == NULL) return -1;
     if (cstring_2 == NULL) return 1;
 
-    size_t cstring_1_length = cu_cstring_length(cstring_1);
-    size_t cstring_2_length = cu_cstring_length(cstring_2);
+    size_t cstring_1_length = cu_cstring_get_length(cstring_1);
+    size_t cstring_2_length = cu_cstring_get_length(cstring_2);
     size_t smaller_length = cstring_1_length;
     if (cstring_1_length > cstring_2_length) smaller_length = cstring_2_length;
     if (length > smaller_length) length = smaller_length;
