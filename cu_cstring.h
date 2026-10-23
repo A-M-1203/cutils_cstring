@@ -79,9 +79,9 @@ size_t cu_cstring_copy(const char *cstring, char *cstring_copy)
     if (cstring == NULL || cstring_copy == NULL) return 0;
 
     size_t copied_characters = 0;
-    while(*cstring++ != 0)
+    while(*cstring != 0)
     {
-        *cstring_copy++ = *cstring;
+        *cstring_copy++ = *cstring++;
         copied_characters++;
     }
     *cstring_copy = 0;
