@@ -134,8 +134,8 @@ long long cu_cstring_first_index_of(const char *cstring, const char *csubstring)
 
 long long cu_cstring_last_index_of(const char *cstring, const char *csubstring)
 {
-    long long last_index = -1;
     long long current_index = -1;
+    long long last_index = -1;
     while ((current_index = cu_cstring_first_index_of(cstring + last_index + 1, csubstring)) != -1)
     {
         last_index += current_index + 1;
@@ -146,13 +146,15 @@ long long cu_cstring_last_index_of(const char *cstring, const char *csubstring)
 
 size_t cu_cstring_indices_of(const char *cstring, const char *csubstring, size_t *indices, size_t indices_capacity)
 {
-    if (cstring == NULL || csubstring == NULL || *cstring == 0 || *csubstring == 0 || indices == NULL) return 0;
+    if (cstring == NULL || csubstring == NULL || *cstring == 0 || *csubstring == 0 || indices == NULL || indices_capacity == 0) return 0;
 
     size_t indices_size = 0;
-    long long index = 0;
-    while ((index = cu_cstring_first_index_of(cstring + (size_t)index, csubstring)) != -1)
+    long long current_index = -1;
+    long long previous_index = -1;
+    while ((current_index = cu_cstring_first_index_of(cstring + previous_index + 1, csubstring)) != -1)
     {
-        indices[indices_size++] = (size_t)index;
+        previous_index += current_index + 1;
+        indices[indices_size++] = previous_index;
         if (indices_size == indices_capacity) break;
     }
 
