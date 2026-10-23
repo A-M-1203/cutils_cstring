@@ -201,13 +201,15 @@ long long cu_cstring_last_index_of_length(const char *const cstring, const size_
 
 size_t cu_cstring_indices_of_length(const char *cstring, size_t cstring_length, const char *csubstring, size_t csubstring_length, size_t *indices, size_t indices_capacity)
 {
-    if (cstring == NULL || csubstring == NULL || *cstring == 0 || *csubstring == 0 || indices == NULL) return 0;
+    if (indices == NULL || indices_capacity == 0) return 0;
 
     size_t indices_size = 0;
-    long long index = 0;
-    while ((index = cu_cstring_first_index_of_length(cstring + (size_t)index, cstring_length - index, csubstring, csubstring_length - index)) != -1)
+    long long current_index = -1;
+    long long previous_index = -1;
+    while ((current_index = cu_cstring_first_index_of_length(cstring + previous_index + 1, cstring_length - (previous_index + 1), csubstring, csubstring_length)) != -1)
     {
-        indices[indices_size++] = (size_t)index;
+        previous_index += current_index + 1;
+        indices[indices_size++] = previous_index;
         if (indices_size == indices_capacity) break;
     }
 
