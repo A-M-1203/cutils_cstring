@@ -418,40 +418,52 @@ size_t cu_cstring_trim_right(char **const cstring, const char *const trim_cstrin
     return characters_trimmed;
 }
 
-size_t cu_cstring_trim(char **cstring, const char *trim_cstring)
+size_t cu_cstring_trim(char **const cstring, const char *const trim_cstring)
 {
-    if (cstring == NULL) return 0;
+    if (cstring == NULL || *cstring == NULL || trim_cstring == NULL) return 0;
 
-    long long index = 0;
-    size_t count = 0;
-    size_t cstring_length = cu_cstring_length(*cstring);
-    size_t trim_cstring_length = cu_cstring_length(trim_cstring);
-    while (index = cu_cstring_first_index_of_length(*cstring + index, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
-    {
-        count++;
-    }
+    const size_t cstring_length = cu_cstring_length(*cstring);
+    const size_t trim_cstring_length = cu_cstring_length(trim_cstring);
+    if (cstring_length < trim_cstring_length) return 0;
 
-    if (count > 0)
+    size_t characters_trimmed_left = 0;
+    size_t length_difference = cstring_length - trim_cstring_length;
+    size_t j;
+    for (size_t i = 0; i <= length_difference;)
     {
-        for (size_t i = 0; i < cstring_length; i++)
+        for (j = 0; j < trim_cstring_length; j++)
         {
-            (*cstring)[i] = (*cstring)[i + trim_cstring_length * count];
+            if ((*cstring)[i + j] != trim_cstring[j]) break;
         }
-    }
 
-    size_t trimed_cstring_length = cstring_length - trim_cstring_length * count;
-    
-    index = 0;
-    count = 0;
-    while (index = cu_cstring_last_index_of_length(*cstring + trim_cstring_length * count, trimed_cstring_length - index, trim_cstring, trim_cstring_length) != -1)
+        i += trim_cstring_length;
+        if (j == trim_cstring_length)
+        {
+            characters_trimmed_left += trim_cstring_length;
+        }
+        else break;
+    }
+    *cstring += characters_trimmed_left;
+
+    length_difference -= characters_trimmed_left;
+    size_t characters_trimmed_right = 0;
+    for (long long i = length_difference; i >= 0;)
     {
-        count++;
+        for (j = 0; j < trim_cstring_length; j++)
+        {
+            if ((*cstring)[i + j] != trim_cstring[j]) break;
+        }
+
+        i -= trim_cstring_length;
+        if (j == trim_cstring_length)
+        {
+            characters_trimmed_right += trim_cstring_length;
+        }
+        else break;
     }
+    (*cstring)[cstring_length - characters_trimmed_left - characters_trimmed_right] = 0;
 
-    trimed_cstring_length -= trim_cstring_length * count;
-    (*cstring)[trimed_cstring_length] = 0;
-
-    return trimed_cstring_length;
+    return characters_trimmed_left + characters_trimmed_right;
 }
 
 size_t cu_cstring_trim_left_length(char **cstring, size_t cstring_length, const char *trim_cstring, size_t trim_cstring_length)
