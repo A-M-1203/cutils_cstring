@@ -30,7 +30,7 @@ CU_INTERNAL size_t    cu_cstring_chop_left_length_copy   (const char  *cstring, 
 CU_INTERNAL size_t    cu_cstring_chop_right_length_copy  (const char  *cstring,              size_t  cstring_length,           size_t  chop_count,         char   *cstring_choped);
 CU_INTERNAL size_t    cu_cstring_chop_length_copy        (const char  *cstring,              size_t  cstring_length,           size_t  chop_count,         char   *cstring_choped);
 // trim
-CU_INTERNAL size_t    cu_cstring_trim_left               (      char **cstring,        const char   *trim_cstring);
+CU_INTERNAL size_t    cu_cstring_trim_left               (const char **cstring,        const char   *trim_cstring);
 CU_INTERNAL size_t    cu_cstring_trim_right              (      char **cstring,        const char   *trim_cstring);
 CU_INTERNAL size_t    cu_cstring_trim                    (      char **cstring,        const char   *trim_cstring);
 CU_INTERNAL size_t    cu_cstring_trim_left_length        (      char **cstring,              size_t  cstring_length,     const char   *trim_cstring,       size_t  trim_cstring_length);
@@ -359,28 +359,33 @@ size_t cu_cstring_chop_length_copy(const char *const cstring, const size_t cstri
     return cstring_choped_length;
 }
 
-size_t cu_cstring_trim_left(char **cstring, const char *trim_cstring)
+size_t cu_cstring_trim_left(const char **const cstring, const char *const cstring_trimmed)
 {
-    if (cstring == NULL) return 0;
+    if (cstring == NULL || *cstring == NULL || cstring_trimmed == NULL) return 0;
 
-    long long index = 0;
-    size_t count = 0;
-    size_t cstring_length = cu_cstring_get_length(*cstring);
-    size_t trim_cstring_length = cu_cstring_get_length(trim_cstring);
-    while (index = cu_cstring_first_index_of_length(*cstring + index, cstring_length - index, trim_cstring, trim_cstring_length) != -1)
+    size_t characters_trimmed = 0;
+    size_t hit_count;
+    do
     {
-        count++;
-    }
+        hit_count = 0;
+        const char *cstring_ptr = *cstring;
+        const char *cstring_trimmed_ptr = cstring_trimmed;
+        while (*cstring_trimmed_ptr != 0 && *cstring_ptr == *cstring_trimmed_ptr)
+        {
+            cstring_trimmed_ptr++;
+            cstring_ptr++;
+            hit_count++;
+        }
 
-    if (count == 0) return cstring_length;
+        if (*cstring_trimmed_ptr == 0)
+        {
+            *cstring = cstring_ptr;
+            characters_trimmed += hit_count;
+        }
+        else break;
+    } while (hit_count != 0);
 
-    for (size_t i = 0; i <= cstring_length; i++)
-    {
-        (*cstring)[i] = (*cstring)[i + trim_cstring_length * count];
-    }
-
-    size_t trimed_cstring_length = cstring_length - trim_cstring_length * count;
-    return trimed_cstring_length;
+    return characters_trimmed;
 }
 
 size_t cu_cstring_trim_right(char **cstring, const char *trim_cstring)
