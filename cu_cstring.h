@@ -759,18 +759,12 @@ int cu_cstring_compare(const char *cstring_1, const char *cstring_2)
     if (cstring_1 == NULL) return -1;
     if (cstring_2 == NULL) return 1;
 
-    size_t cstring_1_length = cu_cstring_length(cstring_1);
-    size_t cstring_2_length = cu_cstring_length(cstring_2);
-    size_t length = cstring_1_length;
-    if (cstring_2_length < cstring_1_length) length = cstring_2_length;
-
-    for (size_t i = 0; i < length; i++)
+    do
     {
-        unsigned char char_1 = (unsigned char)cstring_1[i];
-        unsigned char char_2 = (unsigned char)cstring_2[i];
+        unsigned char char_1 = (unsigned char)(*cstring_1);
+        unsigned char char_2 = (unsigned char)(*cstring_2);
         if (char_1 != char_2) return char_1 - char_2;
-        if (char_1 == 0) return 0;
-    }
+    } while(*cstring_1++ != 0 && *cstring_2++ != 0);
 
     return 0;
 }
